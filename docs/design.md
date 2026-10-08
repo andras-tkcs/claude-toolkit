@@ -121,7 +121,9 @@ error (typos must not be silent). Commands never fall back to a PrivacyFence val
 | `git.merge_style` | no | `merge-commit` or `squash`; only quoted in worker/steward text | `merge-commit` |
 | `verify.fast` | **yes** | run after every merge in `/implement` | `ruff check .`, `python3 -m pytest tests/unit -q` |
 | `verify.dod` | **yes** | the blocking gate `/dod` runs, in order | see below |
-| `verify.dod_doc` | no | project's DoD section; `/dod` walks its conditional + manual rows | `docs/coding-and-testing-guidelines.md#27-definition-of-done-for-a-pr-touching-this-repo` |
+| `verify.dod_conditional[]` | no | `{when: [globs], do: text}` rows `/dod` checks against the diff | 5 rows (connector clients, MCP dispatch, MCP auth/shim, dependencies, `cloudflare/downloads/`) |
+| `verify.dod_manual[]` | no | judgement rows `/dod` reports `ok / needs attention / n/a` | 7 rows |
+| `verify.dod_doc` | no | pointer to the project's human-readable DoD, quoted in the report | `docs/coding-and-testing-guidelines.md#27-…` |
 | `ci.dispatchable[]` | no | `{workflow, use_when, notes?}`: work the container cannot do, dispatched against the session's own branch | 9 entries, see below |
 | `stacks` | **yes** (may be `[]`) | stack skills to load | `[python]` |
 | `models.planner/orchestrator/worker/reviewer` | no | default `opus / sonnet / sonnet / opus` | the defaults |
@@ -237,19 +239,15 @@ written in project scope. Workflow `.github/workflows/test.yml` runs it all on P
 Note the string check also catches the word `connector` in the generic text: I will phrase
 "live connector credentials" as "live external-service credentials".
 
-## 8. Decisions I need from you
+## 8. Decisions (answered at review 1)
 
-1. **Install location.** I recommend `~/.claude/` (user scope) as the default, project scope opt-in.
-   Alternative: project scope by default. (Both work; see §3.)
-2. **Is `andras-tkcs/claude-toolkit` public?** The hook fetches `toolkit.ref` over HTTPS with `git
-   clone --depth 1 --branch <tag>`; a public repo needs nothing. If it is private I will add an optional
-   `GH_TOKEN`/`DEVFLOW_TOKEN` environment variable (set via the environment's secrets) to the fetch.
-   I will not build token handling unless you say private.
-3. **`/dod` rows.** PrivacyFence's authoritative DoD rows are already in its guidelines §2.7, so I
-   point `verify.dod_doc` there and `/dod` stops carrying them (the migration doc deletes the
-   duplicated list from `dod.md` by deleting the file). OK, or do you want them kept in the profile?
-
-I stop here until you answer. My defaults, if you just say "go": 1 = user scope, 2 = public, 3 = as proposed.
+1. **Install location: user scope.** In claude.ai/code a session runs in a fresh Linux container whose
+   `HOME` is `/root`; `~/.claude/` there is the container's own, re-created per session (the probe
+   listed `/root/.claude/{skills,commands,plugins}`). Nothing touches your machine or the repo.
+2. **Toolkit repo is public**; the hook needs no token.
+3. **DoD lives in the profile.** `verify.dod_conditional` (`when` globs + `do` text) and
+   `verify.dod_manual` (text rows) replace `verify.dod_doc`, which stays optional as a pointer only.
+   PrivacyFence's rows are written into its profile in `docs/migrating-privacyfence.md`.
 
 ## 9. Housekeeping note
 
