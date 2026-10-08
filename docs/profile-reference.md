@@ -1,0 +1,82 @@
+# Profile reference: `.claude/toolkit.yaml`
+
+The profile is the only place a project's facts live. The commands read it through the
+`project-profile` skill, which runs `validate_profile.py` first. The schema is
+[`plugins/devflow/schema/profile.schema.json`](../plugins/devflow/schema/profile.schema.json); a
+commented starter is [`templates/toolkit.yaml`](../templates/toolkit.yaml); a complete worked example
+for a real project is in [`migrating-privacyfence.md`](migrating-privacyfence.md).
+
+Rules:
+
+- A **required** key that is missing stops the command with a message that names it, for example
+  `toolkit.yaml: missing required key 'verify.fast'`. The commands never fall back to a value of
+  their own.
+- An **optional** key that is missing means "not used in this project".
+- Only two things have defaults, and `validate_profile.py --resolved` is where they are applied:
+  `docs.plan_dir` (`docs`) and `models` (`opus / sonnet / sonnet / opus`).
+- An unknown key is an error, so a typo is never silent.
+- A file listed in `docs.must_read` or `project_steward` that does not exist is an error.
+
+## Keys
+
+| Key | Required | Meaning |
+|---|---|---|
+| `toolkit.ref` | only for the SessionStart-hook route | Tag of this repository that `install/session-start.sh` installs, for example `v0.1.0` |
+| `project.name` | no | Name used in prose; default is the repository name |
+| `docs.must_read` | **yes** (may be `[]`) | Files the planner reads first, every worker brief names, and the final reviewer reads |
+| `docs.plan_dir` | no (default `docs`) | Plan documents are `<plan_dir>/<slug>-plan.md`, with `<slug>-plan-manual-steps.html` beside it |
+| `docs.adr_dir` | no | If set, the project uses ADRs and the commands plan, write and check them |
+| `docs.adr_index` | no (needs `adr_dir`) | File that must list every new ADR |
+| `docs.adr_bar` | no (needs `adr_dir`) | Where the criteria for needing an ADR are written (`path` or `path#anchor`) |
+| `docs.changelog.file`, `.section` | no | A user-visible change adds a line under this heading; never a version heading |
+| `git.main_branch` | **yes** | Base of plan branches, the merge target and the PR base |
+| `git.branch_pattern` | **yes** | Human-readable branch rule, quoted into prompts, for example `<type>/<kebab-case>` |
+| `git.branch_types` | no | Allowed `<type>` values; `/implement` rejects a manifest whose `feature_branch` uses another |
+| `git.merge_style` | no | `merge-commit` or `squash`; only quoted to workers and the steward |
+| `verify.fast` | **yes** | Commands run after every merge by `/implement` and by the final reviewer. Seconds to a minute |
+| `verify.dod` | **yes** | The blocking definition-of-done gate `/dod` runs, in order |
+| `verify.dod_conditional` | no | `{when: [globs], do: text}`: checked against the diff by `/dod` |
+| `verify.dod_manual` | no | Judgement rows `/dod` reports `ok / needs attention / n/a` |
+| `verify.dod_doc` | no | Pointer to the project's human-readable DoD, quoted in the `/dod` report |
+| `ci.dispatchable` | no | `{workflow, use_when, notes?}`: workflows a session may dispatch against its own branch for work the container cannot do |
+| `stacks` | **yes** (may be `[]`) | Stack skills to load: `python` loads `stack-python`, `swift` loads `stack-swift` |
+| `models.planner`, `.orchestrator`, `.worker`, `.reviewer` | no | `opus` or `sonnet`. `worker` and `reviewer` pick the model of child sessions; planner and orchestrator document intent (the command front matter sets them) |
+| `project_steward` | no | Path to a project skill or doc with policy that fits no other key; read after `pr-steward` and wins where more specific |
+
+### Command entries
+
+Every entry of `verify.fast` and `verify.dod` is a string, or a mapping:
+
+```yaml
+- run: npm test            # required
+  cwd: web                 # relative to the repo root
+  narrow: "npm test -- {args}"   # /dod <args>: run this instead of `run`, with {args} replaced
+  skip_when_narrowed: true # /dod <args>: report n/a (partial run) instead of running
+```
+
+### `ci.dispatchable`
+
+```yaml
+ci:
+  dispatchable:
+    - workflow: macos-tests.yml
+      use_when: Build or test an iOS/macOS target
+      notes: No inputs.
+```
+
+The planner treats anything one of these covers as a phase task, never a manual step; `pr-steward`
+dispatches it instead of skipping the row; a swift project with an empty list gets a warning.
+The workflow file must be on the default branch to be dispatchable (see `pr-steward`).
+
+### `verify.dod_conditional`
+
+`when` globs are matched against `git diff --name-only origin/<main_branch>...HEAD`.
+
+## The manifest
+
+`/make-plan` and `/implement` run `scripts/validate_manifest.py <plan.md> --profile .claude/toolkit.yaml`.
+The manifest format is the one described in `commands/make-plan.md`; the validator checks required
+keys, unique phase ids, known `depends_on`, no cycles, `brief` and `acceptance` on every phase,
+`complexity` of `S` or `M`, `worker_model_reason` for `worker_model: opus`, honest manual-step
+entries, `feature_branch` against `git.branch_types`, and that phases which can run at the same
+time share no path in `touches` (globs included).

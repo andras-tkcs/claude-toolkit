@@ -32,8 +32,8 @@ verify:
   dod:                   # REQUIRED. The blocking definition-of-done gate /dod runs, in order.
     - echo "replace with your full gate"
     # A command can also be a mapping:
-    # - run: pytest -v --cov
-    #   narrow: "pytest -v {args}"     # used when /dod is given arguments (a partial run)
+    # - run: make test-cov
+    #   narrow: "make test ARGS={args}"     # used when /dod is given arguments (a partial run)
     # - run: python3 scripts/check_floor.py
     #   skip_when_narrowed: true       # reported as n/a (partial run) on a partial run
     # - run: npm test

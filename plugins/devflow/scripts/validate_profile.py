@@ -48,7 +48,12 @@ def check(value, schema: dict, root: dict, path: str, errors: list[str]) -> None
     """Validate the JSON Schema subset the profile schema uses."""
     schema = _ref(schema, root)
     if "oneOf" in schema:
-        if not any(_errs(value, s, root, path) == [] for s in schema["oneOf"]):
+        if any(_errs(value, s, root, path) == [] for s in schema["oneOf"]):
+            return
+        typed = [s for s in schema["oneOf"] if "type" in s and _is(value, s["type"])]
+        if typed:  # right kind of value, wrong content: report that option's own errors
+            check(value, typed[0], root, path, errors)
+        else:
             errors.append(f"'{path}': {_describe(schema['oneOf'])}")
         return
     if "enum" in schema and value not in schema["enum"]:
