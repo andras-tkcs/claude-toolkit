@@ -1,7 +1,6 @@
 # Design: devflow, a plan → implement toolkit for Claude Code on the web
 
-Status: **for review 1.** No commands, skills or scripts are written yet. Three decisions at the end
-need your answer; everything else I will build as written here unless you object.
+Status: review 1 answered; this is the design as built. The three decisions in §8 are resolved.
 
 ## 1. What this is
 
@@ -124,7 +123,7 @@ error (typos must not be silent). Commands never fall back to a PrivacyFence val
 | `verify.dod_conditional[]` | no | `{when: [globs], do: text}` rows `/dod` checks against the diff | 5 rows (connector clients, MCP dispatch, MCP auth/shim, dependencies, `cloudflare/downloads/`) |
 | `verify.dod_manual[]` | no | judgement rows `/dod` reports `ok / needs attention / n/a` | 7 rows |
 | `verify.dod_doc` | no | pointer to the project's human-readable DoD, quoted in the report | `docs/coding-and-testing-guidelines.md#27-…` |
-| `ci.dispatchable[]` | no | `{workflow, use_when, notes?}`: work the container cannot do, dispatched against the session's own branch | 9 entries, see below |
+| `ci.dispatchable[]` | no | `{workflow, use_when, notes?}`: work the container cannot do, dispatched against the session's own branch | 7 entries, see below |
 | `stacks` | **yes** (may be `[]`) | stack skills to load | `[python]` |
 | `models.planner/orchestrator/worker/reviewer` | no | default `opus / sonnet / sonnet / opus` | the defaults |
 | `project_steward` | no | project skill with policy that fits no key | `.claude/skills/steward/SKILL.md` |

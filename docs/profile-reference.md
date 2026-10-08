@@ -28,7 +28,7 @@ Rules:
 | `docs.adr_dir` | no | If set, the project uses ADRs and the commands plan, write and check them |
 | `docs.adr_index` | no (needs `adr_dir`) | File that must list every new ADR |
 | `docs.adr_bar` | no (needs `adr_dir`) | Where the criteria for needing an ADR are written (`path` or `path#anchor`) |
-| `docs.changelog.file`, `.section` | no | A user-visible change adds a line under this heading; never a version heading |
+| `docs.changelog.file`, `docs.changelog.section` | no | A user-visible change adds a line under this heading; never a version heading |
 | `git.main_branch` | **yes** | Base of plan branches, the merge target and the PR base |
 | `git.branch_pattern` | **yes** | Human-readable branch rule, quoted into prompts, for example `<type>/<kebab-case>` |
 | `git.branch_types` | no | Allowed `<type>` values; `/implement` rejects a manifest whose `feature_branch` uses another |
@@ -40,7 +40,7 @@ Rules:
 | `verify.dod_doc` | no | Pointer to the project's human-readable DoD, quoted in the `/dod` report |
 | `ci.dispatchable` | no | `{workflow, use_when, notes?}`: workflows a session may dispatch against its own branch for work the container cannot do |
 | `stacks` | **yes** (may be `[]`) | Stack skills to load: `python` loads `stack-python`, `swift` loads `stack-swift` |
-| `models.planner`, `.orchestrator`, `.worker`, `.reviewer` | no | `opus` or `sonnet`. `worker` and `reviewer` pick the model of child sessions; planner and orchestrator document intent (the command front matter sets them) |
+| `models.planner`, `models.orchestrator`, `models.worker`, `models.reviewer` | no | `opus` or `sonnet`. `worker` and `reviewer` pick the model of child sessions; planner and orchestrator document intent (the command front matter sets them) |
 | `project_steward` | no | Path to a project skill or doc with policy that fits no other key; read after `pr-steward` and wins where more specific |
 
 ### Command entries
