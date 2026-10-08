@@ -1,0 +1,12 @@
+toolkit:
+  ref: claude/pensive-ride-6r6lcu
+docs:
+  must_read: [README.md]
+git:
+  main_branch: main
+  branch_pattern: "<type>/<kebab-case>"
+verify:
+  fast: ["python3 -c 'print(1)'"]
+  dod: ["python3 -c 'print(2)'", {run: "python3 -c 'print(3)'", skip_when_narrowed: true}]
+  dod_manual: ["Is the README accurate?"]
+stacks: [python]
