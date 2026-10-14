@@ -38,7 +38,7 @@ project facts and stop with a message naming the missing key.
 | Path | |
 |---|---|
 | `plugins/devflow` | the four commands, the `project-profile`, `pr-steward`, `review-checklist`, `secure-code-review`, `test-review` and `docs-review` skills, `scripts/validate_manifest.py`, `scripts/validate_profile.py`, `scripts/review_decisions.py` (with its page template), `schema/profile.schema.json` |
-| `plugins/stack-python`, `plugins/stack-swift` | stack skills the profile selects |
+| `plugins/stack-python`, `plugins/stack-go`, `plugins/stack-swift`, `plugins/stack-ipados` | stack skills the profile selects (`ipados` goes with `swift`) |
 | `install/session-start.sh` | delivery for cloud sessions |
 | `templates/toolkit.yaml` | starter profile |
 | `docs/` | profile reference, delivery, design, [the review flow](docs/review.md), [migrating PrivacyFence](docs/migrating-privacyfence.md) |
@@ -54,4 +54,4 @@ python3 -m venv .venv && .venv/bin/pip install -r tests/requirements.txt
 ```
 
 The tests include a check that no project-specific word (a particular project's name, test runner
-or linter) appears in the generic plugin. Stack-specific words belong in `plugins/stack-python`.
+or linter) appears in the generic plugin. Stack-specific words belong in the `plugins/stack-*` skills.

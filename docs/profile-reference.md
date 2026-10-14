@@ -39,7 +39,7 @@ Rules:
 | `verify.dod_manual` | no | Judgement rows `/dod` reports `ok / needs attention / n/a` |
 | `verify.dod_doc` | no | Pointer to the project's human-readable DoD, quoted in the `/dod` report |
 | `ci.dispatchable` | no | `{workflow, use_when, notes?}`: workflows a session may dispatch against its own branch for work the container cannot do |
-| `stacks` | **yes** (may be `[]`) | Stack skills to load: `python` loads `stack-python`, `swift` loads `stack-swift` |
+| `stacks` | **yes** (may be `[]`) | Stack skills to load: `python` loads `stack-python`, `go` loads `stack-go`, `swift` loads `stack-swift`, `ipados` loads `stack-ipados` (list it with `swift`) |
 | `models.planner`, `models.orchestrator`, `models.worker`, `models.reviewer` | no | `opus` or `sonnet`. `worker` and `reviewer` pick the model of child sessions; planner and orchestrator document intent (the command front matter sets them) |
 | `project_steward` | no | Path to a project skill or doc with policy that fits no other key; read after `pr-steward` and wins where more specific |
 
@@ -65,7 +65,7 @@ ci:
 ```
 
 The planner treats anything one of these covers as a phase task, never a manual step; `pr-steward`
-dispatches it instead of skipping the row; a swift project with an empty list gets a warning.
+dispatches it instead of skipping the row; a swift or ipados project with an empty list gets a warning.
 The workflow file must be on the default branch to be dispatchable (see `pr-steward`).
 
 ### `verify.dod_conditional`

@@ -99,6 +99,18 @@ def test_swift_without_dispatchable_warns(vp):
     assert vp.validate(p)[1] == []
 
 
+def test_ipados_needs_swift_and_a_macos_workflow(vp):
+    p = copy.deepcopy(MINIMAL)
+    p["stacks"] = ["ipados"]
+    e, w, _ = vp.validate(p)
+    assert e == []
+    assert any("macOS workflow" in x for x in w)
+    assert any("stacks: [swift, ipados]" in x for x in w)
+    p["stacks"] = ["swift", "ipados"]
+    p["ci"] = {"dispatchable": [{"workflow": "ipad-tests.yml", "use_when": "iPad simulator tests"}]}
+    assert vp.validate(p)[1] == []
+
+
 def test_listed_files_must_exist(vp, tmp_path):
     p = copy.deepcopy(MINIMAL)
     p["docs"]["must_read"] = ["README.md", "docs/missing.md"]

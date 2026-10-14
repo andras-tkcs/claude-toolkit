@@ -5,7 +5,7 @@ from conftest import ROOT
 
 FORBIDDEN = re.compile(r"privacyfence|ruff|pytest|src/privacyfence|connector", re.I)
 # stack-python names its tools on purpose; docs/ and tests/ use PrivacyFence as the worked example.
-CHECKED = ["plugins/devflow", "plugins/stack-swift", "install", "templates", ".claude-plugin"]
+CHECKED = ["plugins/devflow", "plugins/stack-swift", "plugins/stack-ipados", "plugins/stack-go", "install", "templates", ".claude-plugin"]
 SUFFIXES = {".md", ".py", ".sh", ".json", ".yaml", ".yml", ".txt"}
 
 

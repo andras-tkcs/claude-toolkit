@@ -51,7 +51,7 @@ verify:
 #       use_when: "Build or test an iOS/macOS target (xcodebuild, simulators)"
 #       notes: "No inputs."              # optional
 
-stacks: []               # REQUIRED (may be []). Stack skills to load: [python], [swift], ...
+stacks: []               # REQUIRED (may be []). Stack skills to load: [python], [go], [swift], [swift, ipados]
 
 # models:                # optional. Defaults shown.
 #   planner: opus

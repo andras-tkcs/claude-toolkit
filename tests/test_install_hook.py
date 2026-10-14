@@ -58,7 +58,8 @@ def test_user_scope_install(tmp_path, project, toolkit_remote):
     base = tmp_path / "home" / ".claude"
     for cmd in ("make-plan", "implement", "dod", "review"):
         assert (base / "commands" / f"{cmd}.md").is_file()
-    for skill in ("project-profile", "pr-steward", "test-review", "docs-review", "stack-python", "stack-swift"):
+    for skill in ("project-profile", "pr-steward", "test-review", "docs-review", "stack-python", "stack-swift",
+                  "stack-ipados", "stack-go"):
         assert (base / "skills" / skill / "SKILL.md").is_file()
     assert (base / "devflow" / "scripts" / "validate_profile.py").is_file()
     assert (base / "devflow" / "scripts" / "review_decisions.html").is_file()
