@@ -56,11 +56,12 @@ def test_user_scope_install(tmp_path, project, toolkit_remote):
     out = run(tmp_path, project, toolkit_remote)
     assert out.returncode == 0, out.stderr
     base = tmp_path / "home" / ".claude"
-    for cmd in ("make-plan", "implement", "dod"):
+    for cmd in ("make-plan", "implement", "dod", "review"):
         assert (base / "commands" / f"{cmd}.md").is_file()
-    for skill in ("project-profile", "pr-steward", "stack-python", "stack-swift"):
+    for skill in ("project-profile", "pr-steward", "test-review", "docs-review", "stack-python", "stack-swift"):
         assert (base / "skills" / skill / "SKILL.md").is_file()
     assert (base / "devflow" / "scripts" / "validate_profile.py").is_file()
+    assert (base / "devflow" / "scripts" / "review_decisions.html").is_file()
     assert (base / "devflow" / "schema" / "profile.schema.json").is_file()
     # nothing was written into the repository
     assert not (project / ".claude" / "commands").exists()

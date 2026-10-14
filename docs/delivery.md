@@ -9,7 +9,7 @@ A cloud session (claude.ai/code) does **not** install plugins that a repo enable
 2. Add the marketplace `andras-tkcs/claude-toolkit` (GitHub repository source).
 3. Enable `devflow`, plus `stack-python` and/or `stack-swift` for the stacks the profile lists.
 4. Commit `.claude/toolkit.yaml` to the repository (see [profile-reference.md](profile-reference.md)).
-5. In a new session, `/make-plan`, `/implement` and `/dod` are available. Under this route Claude
+5. In a new session, `/review`, `/make-plan`, `/implement` and `/dod` are available. Under this route Claude
    Code namespaces plugin skills (`devflow:project-profile`); the commands handle both forms.
 
 Upgrade by updating the plugin in the Project. There is no pin in the repository, so a plan run is
@@ -31,7 +31,7 @@ which is where the `project-profile` skill looks for them.
   "hooks": {
     "SessionStart": [
       { "hooks": [ { "type": "command",
-        "command": "curl -fsSL https://raw.githubusercontent.com/andras-tkcs/claude-toolkit/v0.1.0/install/session-start.sh | bash" } ] }
+        "command": "curl -fsSL https://raw.githubusercontent.com/andras-tkcs/claude-toolkit/v0.2.0/install/session-start.sh | bash" } ] }
     ]
   }
 }
@@ -41,7 +41,7 @@ and, in `.claude/toolkit.yaml`:
 
 ```yaml
 toolkit:
-  ref: v0.1.0
+  ref: v0.2.0
 ```
 
 What the script does, only when `CLAUDE_CODE_REMOTE=true`:

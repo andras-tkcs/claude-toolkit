@@ -31,7 +31,7 @@ PROJECT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pw
 PROFILE="$PROJECT/.claude/toolkit.yaml"
 
 warn() { echo "    WARNING: devflow: $*" >&2; }
-bail() { warn "$*; /make-plan, /implement and /dod are NOT installed in this session"; exit 0; }
+bail() { warn "$*; the devflow commands are NOT installed in this session"; exit 0; }
 
 case "$SCOPE" in
   user) BASE="$HOME/.claude" ;;
