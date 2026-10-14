@@ -1,6 +1,6 @@
-# The profile PrivacyFence would use (see docs/migrating-privacyfence.md).
-toolkit:
-  ref: v0.1.0
+# devflow toolkit profile (andras-tkcs/claude-toolkit; the toolkit's profile reference documents every key).
+# verify.* mirrors docs/coding-and-testing-guidelines.md §2.7: change both together.
+# No toolkit.ref: the toolkit comes from the Claude Project's plugins, not from a SessionStart hook.
 
 project:
   name: PrivacyFence
@@ -38,6 +38,7 @@ verify:
       skip_when_narrowed: true
     - ruff check .
     - bandit -c pyproject.toml -r src
+    - python3 -m mypy src/privacyfence
     - python3 scripts/mypy_strict_modules.py
     - run: npm test
       cwd: mcpb/shim

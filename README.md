@@ -41,7 +41,7 @@ project facts and stop with a message naming the missing key.
 | `plugins/stack-python`, `plugins/stack-swift` | stack skills the profile selects |
 | `install/session-start.sh` | delivery for cloud sessions |
 | `templates/toolkit.yaml` | starter profile |
-| `docs/` | profile reference, delivery, design, [the review flow](docs/review.md), [migrating PrivacyFence](docs/migrating-privacyfence.md) |
+| `docs/` | profile reference, delivery, design, [the review flow](docs/review.md), [how PrivacyFence migrated](docs/migrating-privacyfence.md) |
 | `tests/` | `python -m pytest tests -q` (Python 3.11+, PyYAML) |
 
 There is no server and nothing long-running: everything runs inside Claude Code sessions.

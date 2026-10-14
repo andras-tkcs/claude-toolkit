@@ -4,7 +4,7 @@ The profile is the only place a project's facts live. The commands read it throu
 `project-profile` skill, which runs `validate_profile.py` first. The schema is
 [`plugins/devflow/schema/profile.schema.json`](../plugins/devflow/schema/profile.schema.json); a
 commented starter is [`templates/toolkit.yaml`](../templates/toolkit.yaml); a complete worked example
-for a real project is in [`migrating-privacyfence.md`](migrating-privacyfence.md).
+for a real project is PrivacyFence's profile, [`tests/fixtures/privacyfence-toolkit.yaml`](../tests/fixtures/privacyfence-toolkit.yaml) (see [`migrating-privacyfence.md`](migrating-privacyfence.md)).
 
 Rules:
 
