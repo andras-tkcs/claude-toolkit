@@ -120,11 +120,15 @@ def semantic_checks(profile: dict, root_dir: Path | None) -> tuple[list[str], li
     docs = profile.get("docs", {})
     if ("adr_index" in docs or "adr_bar" in docs) and "adr_dir" not in docs:
         errors.append("'docs.adr_index' / 'docs.adr_bar' need 'docs.adr_dir' (ADRs are used iff adr_dir is set)")
-    if "swift" in profile.get("stacks", []) and not profile.get("ci", {}).get("dispatchable"):
+    stacks = profile.get("stacks", [])
+    apple = [s for s in ("swift", "ipados") if s in stacks]
+    if apple and not profile.get("ci", {}).get("dispatchable"):
         warnings.append(
-            "stack 'swift' is selected but 'ci.dispatchable' is empty: iOS/macOS builds and tests "
-            "cannot run in the container, list a macOS workflow there"
+            f"stack '{apple[0]}' is selected but 'ci.dispatchable' is empty: iOS/iPadOS/macOS builds "
+            "and tests cannot run in the container, list a macOS workflow there"
         )
+    if "ipados" in stacks and "swift" not in stacks:
+        warnings.append("stack 'ipados' builds on 'swift': list both (stacks: [swift, ipados])")
     if root_dir is not None:
         paths = list(docs.get("must_read", []))
         if profile.get("project_steward"):

@@ -7,7 +7,7 @@ A cloud session (claude.ai/code) does **not** install plugins that a repo enable
 
 1. In claude.ai, open the Claude Project the repository's sessions belong to, and its settings.
 2. Add the marketplace `andras-tkcs/claude-toolkit` (GitHub repository source).
-3. Enable `devflow`, plus `stack-python` and/or `stack-swift` for the stacks the profile lists.
+3. Enable `devflow`, plus the `stack-*` plugins (`stack-python`, `stack-go`, `stack-swift`, `stack-ipados`) for the stacks the profile lists.
 4. Commit `.claude/toolkit.yaml` to the repository (see [profile-reference.md](profile-reference.md)).
 5. In a new session, `/review`, `/make-plan`, `/implement` and `/dod` are available. Under this route Claude
    Code namespaces plugin skills (`devflow:project-profile`); the commands handle both forms.
@@ -16,7 +16,7 @@ Upgrade by updating the plugin in the Project. There is no pin in the repository
 only reproducible to the extent the Project's plugin version is.
 
 **Status: not tested end to end.** The Project settings UI cannot be driven from a session. What was
-verified: `claude plugin validate` passes for the marketplace and all three plugins, and
+verified: `claude plugin validate` passes for the marketplace and all its plugins, and
 `claude plugin marketplace add <path>` followed by `claude plugin install devflow@claude-toolkit`
 puts the commands, skills and scripts in `~/.claude/plugins/cache/claude-toolkit/devflow/<version>/`,
 which is where the `project-profile` skill looks for them.
@@ -31,7 +31,7 @@ which is where the `project-profile` skill looks for them.
   "hooks": {
     "SessionStart": [
       { "hooks": [ { "type": "command",
-        "command": "curl -fsSL https://raw.githubusercontent.com/andras-tkcs/claude-toolkit/v0.2.0/install/session-start.sh | bash" } ] }
+        "command": "curl -fsSL https://raw.githubusercontent.com/andras-tkcs/claude-toolkit/v0.3.0/install/session-start.sh | bash" } ] }
     ]
   }
 }
@@ -41,7 +41,7 @@ and, in `.claude/toolkit.yaml`:
 
 ```yaml
 toolkit:
-  ref: v0.2.0
+  ref: v0.3.0
 ```
 
 What the script does, only when `CLAUDE_CODE_REMOTE=true`:

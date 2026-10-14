@@ -18,7 +18,7 @@ Nightshift's runtime is not used. From it I take: the marketplace shape, the `re
 ## 2. Layout
 
 ```
-.claude-plugin/marketplace.json         # name: claude-toolkit; plugins: devflow, stack-python, stack-swift
+.claude-plugin/marketplace.json         # name: claude-toolkit; plugins: devflow, stack-python, stack-swift, stack-ipados, stack-go
 plugins/devflow/
   .claude-plugin/plugin.json
   commands/{make-plan,implement,dod,review}.md   # review: see docs/review.md
@@ -33,6 +33,8 @@ plugins/devflow/
   schema/profile.schema.json
 plugins/stack-python/skills/stack-python/SKILL.md
 plugins/stack-swift/skills/stack-swift/SKILL.md
+plugins/stack-ipados/skills/stack-ipados/SKILL.md
+plugins/stack-go/skills/stack-go/SKILL.md
 install/session-start.sh
 templates/toolkit.yaml                  # commented starter profile
 docs/{README.md,profile-reference.md,delivery.md,design.md,migrating-privacyfence.md}
@@ -225,13 +227,24 @@ workflow snippet goes in the skill. The profile key `ci.dispatchable` must conta
 `use_when` mentions the macOS runner; `validate_profile.py` warns (not errors) when `stacks`
 includes `swift` and `ci.dispatchable` is empty.
 
+`stack-ipados` (added later): layered on `stack-swift`, never alone (the validator warns). A layout
+that keeps models and view models in a local SwiftPM package (`swift test` here) and leaves a thin
+app target with synchronized folders (no `.pbxproj` edits); the iPad behaviours a UI phase must name
+(any window size, split view, scenes, keyboard, pointer, Pencil, drag and drop, accessibility);
+a starter workflow that picks an iPad simulator by query. Same dispatchable warning as `swift`.
+
+`stack-go` (added later): toolchain from `go.mod`, the project's task runner over bare commands,
+the gofmt / vet / build / test / race / lint / govulncheck ladder, error, context and goroutine
+conventions, table-driven tests with `httptest`, acceptance as `go test <pkg> -run '^Name$'`, and
+`go.mod` as the usual overlap between parallel phases.
+
 ## 7. Tests and CI
 
 pytest, stdlib + PyYAML: manifest (good; missing field; unknown `depends_on`; cycle; overlapping
 `touches` in a wave; `worker_model: opus` without reason; real PrivacyFence manifests from git history
 stored under `tests/fixtures/`), profile (good; each missing required key named; unknown key; bad
 types; PrivacyFence profile), a **no-project-words test** that greps `plugins/devflow`, `install/`,
-`plugins/stack-swift` and `templates/` for `privacyfence|ruff|pytest|src/privacyfence|connector`
+`plugins/stack-swift`, `plugins/stack-ipados`, `plugins/stack-go` and `templates/` for `privacyfence|ruff|pytest|src/privacyfence|connector`
 (case-insensitive; `stack-python` and `docs/` exempt), plus marketplace/plugin JSON structure and a
 `bash -n` / `shellcheck`-if-present check on the hook. Plus a hook test that runs `session-start.sh` against a
 local bare repo as the "toolkit remote": idempotent, no-op without `CLAUDE_CODE_REMOTE`, exclude
