@@ -248,7 +248,7 @@ Note the string check also catches the word `connector` in the generic text: I w
 2. **Toolkit repo is public**; the hook needs no token.
 3. **DoD lives in the profile.** `verify.dod_conditional` (`when` globs + `do` text) and
    `verify.dod_manual` (text rows) replace `verify.dod_doc`, which stays optional as a pointer only.
-   PrivacyFence's rows are written into its profile in `docs/migrating-privacyfence.md`.
+   PrivacyFence's rows are in its profile, copied to `tests/fixtures/privacyfence-toolkit.yaml`.
 
 ## 9. Housekeeping note
 
