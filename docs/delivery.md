@@ -31,7 +31,7 @@ which is where the `project-profile` skill looks for them.
   "hooks": {
     "SessionStart": [
       { "hooks": [ { "type": "command",
-        "command": "curl -fsSL https://raw.githubusercontent.com/andras-tkcs/claude-toolkit/v0.2.0/install/session-start.sh | bash" } ] }
+        "command": "curl -fsSL https://raw.githubusercontent.com/andras-tkcs/claude-toolkit/v0.3.0/install/session-start.sh | bash" } ] }
     ]
   }
 }
@@ -41,7 +41,7 @@ and, in `.claude/toolkit.yaml`:
 
 ```yaml
 toolkit:
-  ref: v0.2.0
+  ref: v0.3.0
 ```
 
 What the script does, only when `CLAUDE_CODE_REMOTE=true`:
