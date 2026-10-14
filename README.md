@@ -10,6 +10,14 @@ language.
   periodic check-ins, merges into one feature branch, verification after every merge, one Opus review
   session, and one PR driven to green.
 - **`/dod`** runs the project's definition of done and reports a table.
+- **`/review [scope]`** (Opus) reviews the whole repository, some paths, or a PR in depth: security,
+  tests at the unit, integration and e2e levels, and the documentation and website (accuracy,
+  validity, completeness, clarity, readability). It verifies every finding, decides itself what to
+  fix and what not, and writes a review document on a `review/<slug>` branch. What only you can
+  decide goes onto an interactive page (add to the plan, create an issue, or drop); once you have
+  chosen, it updates the review and creates the issues. Then run `/make-plan <review URL>`.
+
+See [docs/review.md](docs/review.md) for the review flow.
 
 Everything specific to your project lives in one file, `.claude/toolkit.yaml` (docs to read, branch
 rules, verify commands, CI workflows a session may dispatch, stacks, models). The commands contain no
@@ -29,11 +37,11 @@ project facts and stop with a message naming the missing key.
 
 | Path | |
 |---|---|
-| `plugins/devflow` | the three commands, the `project-profile`, `pr-steward`, `review-checklist` and `secure-code-review` skills, `scripts/validate_manifest.py`, `scripts/validate_profile.py`, `schema/profile.schema.json` |
+| `plugins/devflow` | the four commands, the `project-profile`, `pr-steward`, `review-checklist`, `secure-code-review`, `test-review` and `docs-review` skills, `scripts/validate_manifest.py`, `scripts/validate_profile.py`, `scripts/review_decisions.py` (with its page template), `schema/profile.schema.json` |
 | `plugins/stack-python`, `plugins/stack-swift` | stack skills the profile selects |
 | `install/session-start.sh` | delivery for cloud sessions |
 | `templates/toolkit.yaml` | starter profile |
-| `docs/` | profile reference, delivery, design, [migrating PrivacyFence](docs/migrating-privacyfence.md) |
+| `docs/` | profile reference, delivery, design, [the review flow](docs/review.md), [migrating PrivacyFence](docs/migrating-privacyfence.md) |
 | `tests/` | `python -m pytest tests -q` (Python 3.11+, PyYAML) |
 
 There is no server and nothing long-running: everything runs inside Claude Code sessions.

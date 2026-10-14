@@ -1,6 +1,6 @@
 ---
 description: Research a change, then write either a single-session prompt (small scope) or a plan document with an /implement manifest on its own plan/ branch (large scope), plus a step-by-step HTML page for anything only a human can do
-argument-hint: "<what to build: a prompt, an issue number, or both>"
+argument-hint: "<what to build: a prompt, an issue number, a /review document URL, or a mix>"
 model: opus
 ---
 
@@ -50,6 +50,19 @@ Use whichever form the skill list shows. In this file:
 
 1. If `$ARGUMENTS` names an issue (`#<n>` or a URL), read it and its comments with the GitHub MCP
    tools. If `$ARGUMENTS` is empty, stop and ask what to plan.
+   If it is the URL of a review document written by `/review` (a file on a `review/` branch, with a
+   `review_slug` header), read it from its branch with `git fetch origin <ref>` and
+   `git show FETCH_HEAD:<path>`. Its header's `status` must be `ready-for-plan`; if it is
+   `decisions-pending`, stop and tell the user to finish the decisions with
+   `/review apply <that URL>` first. Then the ask is exactly its "Findings to fix" section:
+   - Plan every finding there and nothing else. "Not doing" and "Issues created" are out of scope;
+     do not re-triage them.
+   - Re-check each finding's evidence against the current `<main>` (the review names the commit it
+     looked at). A finding that no longer holds is left out, with the reason in your final reply.
+   - The review's "Suggested grouping" is a starting point for phases, not a constraint.
+   - The Goal links the review document; every finding id appears in the acceptance of the phase
+     (or the step of a single-session prompt) that fixes it, and its **Acceptance** line is the
+     starting point for that acceptance item.
 2. Read the must-read docs, the `pr-steward` skill, the profile's `project_steward` file if it has
    one, the ADR index (`docs.adr_index`) and every ADR if the profile has ADRs, and every
    reference doc and source module the change touches. Use `Explore` subagents for broad sweeps; read the files that matter

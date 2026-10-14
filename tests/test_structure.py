@@ -30,18 +30,27 @@ def test_plugin_versions_agree():
     assert len(versions) == 1
 
 
+COMMANDS = ("make-plan", "implement", "dod", "review")
+
+
+def test_command_files_are_exactly_these():
+    assert {p.stem for p in (DEVFLOW / "commands").glob("*.md")} == set(COMMANDS)
+
+
 def test_commands_have_front_matter():
-    for name in ("make-plan", "implement", "dod"):
+    for name in COMMANDS:
         fm = frontmatter(DEVFLOW / "commands" / f"{name}.md")
         assert fm["description"]
     assert frontmatter(DEVFLOW / "commands" / "make-plan.md")["model"] == "opus"
+    assert frontmatter(DEVFLOW / "commands" / "review.md")["model"] == "opus"
     assert frontmatter(DEVFLOW / "commands" / "implement.md")["model"] == "sonnet"
 
 
 def test_skills_have_matching_names():
     skills = list(ROOT.glob("plugins/*/skills/*/SKILL.md"))
     assert {p.parent.name for p in skills} == {
-        "project-profile", "pr-steward", "review-checklist", "secure-code-review", "stack-python", "stack-swift"}
+        "project-profile", "pr-steward", "review-checklist", "secure-code-review", "test-review", "docs-review",
+        "stack-python", "stack-swift"}
     for path in skills:
         fm = frontmatter(path)
         assert fm["name"] == path.parent.name
@@ -49,7 +58,7 @@ def test_skills_have_matching_names():
 
 
 def test_commands_load_the_profile_skill_first():
-    for name in ("make-plan", "implement", "dod"):
+    for name in COMMANDS:
         text = (DEVFLOW / "commands" / f"{name}.md").read_text()
         assert "project-profile" in text
         assert "never substitute" in " ".join(text.split())
@@ -59,6 +68,19 @@ def test_commands_call_the_validators():
     assert "validate_manifest.py" in (DEVFLOW / "commands" / "implement.md").read_text()
     assert "validate_manifest.py" in (DEVFLOW / "commands" / "make-plan.md").read_text()
     assert "validate_profile.py" in (DEVFLOW / "skills" / "project-profile" / "SKILL.md").read_text()
+    assert "review_decisions.py" in (DEVFLOW / "commands" / "review.md").read_text()
+
+
+def test_review_hands_over_to_make_plan():
+    review = (DEVFLOW / "commands" / "review.md").read_text()
+    make_plan = (DEVFLOW / "commands" / "make-plan.md").read_text()
+    for skill in ("secure-code-review", "test-review", "docs-review"):
+        assert f"`{skill}`" in review
+    # The header fields and section names /make-plan relies on are the ones /review writes.
+    for text in ("review_slug", "ready-for-plan", "decisions-pending", "Findings to fix", "Not doing",
+                 "Issues created", "Suggested grouping", "/review apply"):
+        assert text in review, text
+        assert text in make_plan, text
 
 
 def test_every_profile_key_in_the_schema_is_documented():

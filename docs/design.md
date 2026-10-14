@@ -21,13 +21,15 @@ Nightshift's runtime is not used. From it I take: the marketplace shape, the `re
 .claude-plugin/marketplace.json         # name: claude-toolkit; plugins: devflow, stack-python, stack-swift
 plugins/devflow/
   .claude-plugin/plugin.json
-  commands/{make-plan,implement,dod}.md
+  commands/{make-plan,implement,dod,review}.md   # review: see docs/review.md
   skills/project-profile/SKILL.md       # how every command reads, validates and quotes the profile
   skills/pr-steward/SKILL.md            # generic steward policy; table comes from ci.dispatchable
   skills/review-checklist/SKILL.md      # Nightshift, adapted (no run-ledger / R-AG rules)
-  skills/secure-code-review/SKILL.md    # Nightshift, adapted
+  skills/secure-code-review/SKILL.md    # Nightshift, adapted; whole-repository section for /review
+  skills/{test-review,docs-review}/SKILL.md   # checklists for /review's test and documentation dimensions
   scripts/validate_manifest.py          # CLI: validate_manifest.py <plan.md|manifest.yaml> [--profile P]
   scripts/validate_profile.py           # CLI: validate_profile.py [.claude/toolkit.yaml]
+  scripts/review_decisions.{py,html}    # CLI: review_decisions.py <items.json> <out.html>, /review's decisions page
   schema/profile.schema.json
 plugins/stack-python/skills/stack-python/SKILL.md
 plugins/stack-swift/skills/stack-swift/SKILL.md

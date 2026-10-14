@@ -1,6 +1,6 @@
 ---
 name: project-profile
-description: How the devflow commands (/make-plan, /implement, /dod) find, validate and quote the project profile .claude/toolkit.yaml. Load it first in any of those commands, or whenever you need a project fact such as the main branch, the verify commands or the must-read docs.
+description: How the devflow commands (/review, /make-plan, /implement, /dod) find, validate and quote the project profile .claude/toolkit.yaml. Load it first in any of those commands, or whenever you need a project fact such as the main branch, the verify commands or the must-read docs.
 user-invocable: false
 ---
 
